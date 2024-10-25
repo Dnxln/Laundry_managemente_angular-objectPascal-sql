@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "descrizione": "Camicia",
+        "versionID": 0
+    },
+    {
+        "id": 2,
+        "descrizione": "Abito",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "Giacca",
+        "versionID": 0
+    },
+    {
+        "id": 4,
+        "descrizione": "Piumino",
+        "versionID": 0
+    },
+    {
+        "id": 5,
+        "descrizione": "Lenzuola",
+        "versionID": 0
+    },
+    {
+        "id": 6,
+        "descrizione": "Tenda",
+        "versionID": 0
+    },
+    {
+        "id": 7,
+        "descrizione": "T-Shirt",
+        "versionID": 0
+    },
+    {
+        "id": 8,
+        "descrizione": "Pantaloni",
+        "versionID": 0
+    },
+    {
+        "id": 9,
+        "descrizione": "Gilet",
+        "versionID": 0
+    },
+    {
+        "id": 53,
+        "descrizione": "Gonna",
+        "versionID": 0
+    }
+]

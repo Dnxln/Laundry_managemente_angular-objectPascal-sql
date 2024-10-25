@@ -1,0 +1,66 @@
+h1 {
+  text-align: center;     /* Centra il testo */
+  font-family: 'Arial', sans-serif;  /* Specifica un font personalizzato */
+  color: #2600a3;          /* Colore viola */
+  font-weight: bold;      /* Testo in grassetto */
+  padding-top: 20px; /* Aggiunge uno spaziamento di 20px dall'alto */
+
+}
+
+table {
+  width: 100;
+}
+
+.table-container {
+  width: 97%;
+  margin: 0 auto;
+  padding: 1em;
+}
+  
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin: .5px 0;
+}
+  
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+  
+.example-full-width {
+  width: 100%;
+}
+
+.center-screen {
+  display: flex; /* Utilizza il display flex per creare un layout flessibile */
+  justify-content: center; /* Allinea orizzontalmente il contenuto al centro dello schermo */
+  align-items: center; /* Allinea verticalmente il contenuto al centro dello schermo */
+  /*height: 100vh; /* Imposta l'altezza dell'elemento "center-screen" al 100% dell'altezza della viewport del browser */
+}
+
+
+.button-container {
+  margin-left: 50px;
+  margin-bottom: 22px;
+}
+
+.option-container {
+  margin-right: 50px;
+}
+
+.table-container {
+  margin-top: 10px;
+}
+
+
+.mat-elevation-z8 tr:hover {
+  background-color: #dbc6fd;
+}
+
+.selected {
+  background-color: #ac85eb !important;
+}

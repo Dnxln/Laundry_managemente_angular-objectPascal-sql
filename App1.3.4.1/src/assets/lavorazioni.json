@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "descrizione": "Lavaggio a acqua",
+        "versionID": 0
+    },
+    {
+        "id": 2,
+        "descrizione": "Lavaggio a secco",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "2",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "Stiratura",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "Stiratura",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "Stiratura",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "Stiratura",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "Stiratura",
+        "versionID": 0
+    },
+    {
+        "id": 3,
+        "descrizione": "Stiratura",
+        "versionID": 0
+    }
+]

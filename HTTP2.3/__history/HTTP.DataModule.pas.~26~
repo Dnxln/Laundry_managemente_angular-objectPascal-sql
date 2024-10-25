@@ -1,0 +1,162 @@
+unit HTTP.DataModule;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.UI.Intf, FireDAC.ConsoleUI.Wait,
+  FireDAC.Phys.MSSQLDef, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MSSQL, FireDAC.Stan.Param,
+  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, FireDAC.Phys.ODBCBase, FireDAC.Comp.UI;
+
+type
+  TMainDataModule = class(TDataModule)
+    WaitCursor: TFDGUIxWaitCursor;
+    MSSQLDriverLink: TFDPhysMSSQLDriverLink;
+    FDConnection: TFDConnection;
+    CapiQuery: TFDQuery;
+    CapoQuery: TFDQuery;
+    LavorazioniQuery: TFDQuery;
+    LavorazioneQuery: TFDQuery;
+    ClientiQuery: TFDQuery;
+    ClienteQuery: TFDQuery;
+    CapoInsertQuery: TFDQuery;
+    CapoUpdateQuery: TFDQuery;
+    CapoDeleteQuery: TFDQuery;
+    LavorazioneInsertQuery: TFDQuery;
+    LavorazioneUpdateQuery: TFDQuery;
+    LavorazioneDeleteQuery: TFDQuery;
+    ClienteInsertQuery: TFDQuery;
+    ClienteUpdateQuery: TFDQuery;
+    ClienteDeleteQuery: TFDQuery;
+    procedure DataModuleCreate(Sender: TObject);
+
+  strict private
+    function GetCapi: TDataset;
+    function GetCapo(const AID: Integer): TDataset;
+    function PostCapo(const ADESCRIZIONE: String): TDataset;
+    function PutCapo(const AID: Integer; const ADESCRIZIONE: String; const AVERSIONID: Integer): TDataset;
+    function DeleteCapo_(const AID: Integer; const AVERSIONID: Integer): TDataset;
+
+    function GetLavorazioni: TDataset;
+    function GetLavorazione(const AID: Integer): TDataset;
+    function PostLavorazione(const ADESCRIZIONE: String): TDataset;
+    function PutLavorazione(const AID: Integer; const ADESCRIZIONE: String; const AVERSIONID: Integer): TDataset;
+    function DeleteLavorazione_(const AID: Integer; const AVERSIONID: Integer): TDataset;
+
+    function GetClienti: TDataset;
+    function GetCliente(const AID: Integer): TDataset;
+
+  public
+    property Capi: TDataset read GetCapi;
+    property Capo[const AID: Integer]: TDataset read GetCapo;
+    property InsertCapo[const ADESCRIZIONE: String]: TDataset read PostCapo;
+    property UpdateCapo[const AID: Integer; const ADESCRIZIONE: String; const AVERSIONID: Integer]: TDataset read PutCapo;
+    property DeleteCapo[const AID: Integer; const AVERSIONID: Integer]: TDataset read DeleteCapo_;
+
+    property Lavorazioni: TDataset read GetLavorazioni;
+    property Lavorazione[const AID: Integer]: TDataset read GetLavorazione;
+    property InsertLavorazione[const ADESCRIZIONE: String]: TDataset read PostLavorazione;
+    property UpdateLavorazione[const AID: Integer; const ADESCRIZIONE: String; const AVERSIONID: Integer]: TDataset read PutLavorazione;
+    property DeleteLavorazione[const AID: Integer; const AVERSIONID: Integer]: TDataset read DeleteLavorazione_;
+
+    property Clienti: TDataset read GetClienti;
+    property Cliente[const AID: Integer]: TDataset read GetCliente;
+
+  end;
+
+implementation
+
+{%CLASSGROUP 'System.Classes.TPersistent'}
+
+{$R *.dfm}
+
+procedure TMainDataModule.DataModuleCreate(Sender: TObject);
+begin
+  FDConnection.Open;
+end;
+
+
+function TMainDataModule.GetCapi: TDataset;
+begin
+  result := CapiQuery;
+  result.Open;
+end;
+function TMainDataModule.GetCapo(const AID: Integer): TDataset;
+begin
+  CapoQuery.ParamByName('ID').AsInteger := AID;
+  result := CapoQuery;
+  result.Open;
+end;
+function TMainDataModule.PostCapo(const ADESCRIZIONE: String): TDataset;
+begin
+  CapoInsertQuery.ParamByName('DESCRIZIONE').AsString	:= ADESCRIZIONE;
+  result := CapoInsertQuery;
+  result.ExecSQL;
+end;
+function TMainDataModule.PutCapo(const AID: Integer; const ADESCRIZIONE: String; const AVERSIONID: Integer): TDataset;
+begin
+  CapoUpdateQuery.ParamByName('ID').AsInteger	:= AID;
+  CapoUpdateQuery.ParamByName('DESCRIZIONE').AsString	:= ADESCRIZIONE;
+  CapoUpdateQuery.ParamByName('VERSIONID').AsInteger	:= AVERSIONID;
+  result := CapoUpdateQuery;
+  result.Open;
+end;
+function TMainDataModule.DeleteCapo_(const AID: Integer; const AVERSIONID: Integer): TDataset;
+begin
+  CapoDeleteQuery.ParamByName('ID').AsInteger	:= AID;
+  CapoDeleteQuery.ParamByName('VERSIONID').AsInteger	:= AVERSIONID;
+  result := CapoDeleteQuery;
+  result.Open;
+end;
+
+
+function TMainDataModule.GetLavorazioni: TDataset;
+begin
+  result := LavorazioniQuery;
+  result.Open;
+end;
+function TMainDataModule.GetLavorazione(const AID: Integer): TDataset;
+begin
+  LavorazioneQuery.ParamByName('ID').AsInteger := AID;
+  result := LavorazioneQuery;
+  result.Open;
+end;
+function TMainDataModule.PostLavorazione(const ADESCRIZIONE: String): TDataset;
+begin
+  LavorazioneInsertQuery.ParamByName('DESCRIZIONE').AsString := ADESCRIZIONE;
+  result := LavorazioneInsertQuery;
+  result.Open;
+end;
+function TMainDataModule.PutLavorazione(const AID: Integer; const ADESCRIZIONE: String; const AVERSIONID: Integer): TDataset;
+begin
+  LavorazioneUpdateQuery.ParamByName('ID').AsInteger	:= AID;
+  LavorazioneUpdateQuery.ParamByName('DESCRIZIONE').AsString	:= ADESCRIZIONE;
+  LavorazioneUpdateQuery.ParamByName('VERSIONID').AsInteger	:= AVERSIONID;
+  result := LavorazioneUpdateQuery;
+  result.Open;
+end;
+function TMainDataModule.DeleteLavorazione_(const AID: Integer; const AVERSIONID: Integer): TDataset;
+begin
+  LavorazioneDeleteQuery.ParamByName('ID').AsInteger	:= AID;
+  LavorazioneDeleteQuery.ParamByName('VERSIONID').AsInteger	:= AVERSIONID;
+  result := LavorazioneDeleteQuery;
+  result.Open;
+end;
+
+
+
+function TMainDataModule.GetClienti: TDataset;
+begin
+  result := ClientiQuery;
+  result.Open;
+end;
+function TMainDataModule.GetCliente(const AID: Integer): TDataset;
+begin
+  ClienteQuery.ParamByName('ID').AsInteger := AID;
+  result := ClienteQuery;
+  result.Open;
+end;
+
+end.

@@ -1,0 +1,87 @@
+<h1>Lavorazioni</h1>
+
+<div class="center-screen">
+
+    <div class="option-container">
+        <mat-form-field>
+            <mat-label>Record da esaminare</mat-label>
+            <mat-select (selectionChange)="handleSelectionChange($event)" [(ngModel)]="selectedIDForm">
+                <mat-option *ngFor="let ID of IDs" [value]="ID.value">
+                    {{ID.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Inserisci il valore che cerchi:</mat-label>
+            <input matInput placeholder="f:<campo>#<valore>" (keydown)="handleKeyPress($event)"[(ngModel)]="descrizioneLavorazione">
+        </mat-form-field>
+    </div>
+
+    <div class="button-container">
+        <button (click)="filtraLavorazioniTable()" mat-raised-button color="primary">Filtra tabella</button>
+    </div>
+
+</div>
+
+<div class="table-container">
+
+    <table mat-table [dataSource]="dataSourceLavorazioni" class="mat-elevation-z8" matSort mat-table-selection>
+        <!-- Definizione delle colonne -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let item"> {{ item.id }} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="descrizione">
+            <th mat-header-cell *matHeaderCellDef> Descrizione </th>
+            <td mat-cell *matCellDef="let item"> {{ item.descrizione }} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="versionID">
+            <th mat-header-cell *matHeaderCellDef> versionID </th>
+            <td mat-cell *matCellDef="let item"> {{ item.versionID }} </td>
+        </ng-container>
+    
+        <!-- Righe della tabella -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsLavorazioni"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsLavorazioni; let i = index;"
+            [ngClass]="{ 'selected': isRowSelectedByIndex(i) }"
+            (click)="handleRowClick(row, i)"
+            mat-row-selection
+            [rowSelection]="row">
+        </tr>
+    </table>
+
+</div>
+
+<mat-paginator #paginatorLavorazioni [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+
+<div *ngIf="selectedLavorazione != null" class="table-container">
+    
+    <table mat-table [dataSource]="dataSourceLavorazioniID" class="mat-elevation-z8">
+        <!-- Definizione delle colonne -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let item"> {{ item.id }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="descrizione">
+            <th mat-header-cell *matHeaderCellDef> Descrizione </th>
+            <td mat-cell *matCellDef="let item"> {{ item.descrizione }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="versionID">
+            <th mat-header-cell *matHeaderCellDef> versionID </th>
+            <td mat-cell *matCellDef="let item"> {{ item.versionID }} </td>
+        </ng-container>
+
+        <!-- Righe della tabella -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsLavorazioni"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsLavorazioni;" [ngClass]="'mat-row row-hover'"></tr>
+    </table>
+
+</div>

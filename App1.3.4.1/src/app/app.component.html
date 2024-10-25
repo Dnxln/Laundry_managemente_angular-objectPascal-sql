@@ -1,0 +1,43 @@
+<mat-tab-group [(selectedIndex)]="selectedTab" (selectedIndexChange)="changeTab($event)">
+
+
+  <mat-tab label="Capi">
+    <ng-template matTabContent>
+      <!-- Contenuti della Tab -->
+      <div *ngIf="selectedTab === 0">
+        <app-view-capi-tab></app-view-capi-tab> 
+      </div>
+    </ng-template>
+  </mat-tab>
+  
+  <mat-tab label="Lavorazioni">
+    <ng-template matTabContent>
+      <!-- Contenuti della Tab -->
+      <div *ngIf="selectedTab === 1">
+        <app-view-lavorazioni-tab></app-view-lavorazioni-tab>
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab label="Clienti">
+    <ng-template matTabContent>
+      <!-- Contenuti della Tab -->
+      <div *ngIf="selectedTab === 2">
+      <app-view-clienti-tab></app-view-clienti-tab> 
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab label="Work in progress">
+    <ng-template matTabContent>
+      <!-- Contenuti della Tab -->
+      <div *ngIf="selectedTab === 3">
+
+      <h1>Still work in progress</h1>
+
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  
+</mat-tab-group>

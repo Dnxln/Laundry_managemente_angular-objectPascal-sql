@@ -1,0 +1,310 @@
+object MainDataModule: TMainDataModule
+  OnCreate = DataModuleCreate
+  Height = 671
+  Width = 1095
+  object WaitCursor: TFDGUIxWaitCursor
+    Provider = 'Console'
+    ScreenCursor = gcrNone
+    Left = 32
+    Top = 20
+  end
+  object MSSQLDriverLink: TFDPhysMSSQLDriverLink
+    ListServers = False
+    Left = 120
+    Top = 20
+  end
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=Lavanderia2'
+      'User_Name=sa'
+      'Password=Sviluppo#2023'
+      'Server=192.168.1.60\SQLExpress'
+      'DriverID=MSSQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 220
+    Top = 20
+  end
+  object CapiQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT ID, Descrizione, VersionID'
+      'FROM Capi'
+      'ORDER BY ID')
+    Left = 535
+    Top = 64
+  end
+  object CapoQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT ID, Descrizione, VersionID'
+      'FROM Capi'
+      'WHERE ID = :ID')
+    Left = 489
+    Top = 42
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object LavorazioniQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT ID, Descrizione, VersionID'
+      'FROM Lavorazioni'
+      'ORDER BY ID')
+    Left = 422
+    Top = 178
+  end
+  object LavorazioneQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT ID, Descrizione, VersionID'
+      'FROM Lavorazioni'
+      'WHERE ID = :ID')
+    Left = 484
+    Top = 200
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object ClientiQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      
+        'SELECT ID, Nome, Cognome, Indirizzo, Telefono, Giorno, Mese, Ver' +
+        'sionID'
+      'FROM Clienti'
+      'ORDER BY ID')
+    Left = 416
+    Top = 328
+  end
+  object ClienteQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      
+        'SELECT ID, Nome, Cognome, Indirizzo, Telefono, Giorno, Mese, Ver' +
+        'sionID'
+      'FROM Clienti'
+      'WHERE ID = :ID')
+    Left = 466
+    Top = 350
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object CapoInsertQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'DECLARE @ID int'
+      ''
+      'SELECT @ID = NEXT VALUE FOR CapiID'
+      ''
+      'INSERT INTO Capi ('
+      '  ID,'
+      '  Descrizione,'
+      '  VersionID)'
+      'VALUES ('
+      '  @ID,'
+      '  :Descrizione,'
+      '  0)'
+      '')
+    Left = 579
+    Top = 86
+    ParamData = <
+      item
+        Name = 'DESCRIZIONE'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 50
+      end>
+  end
+  object CapoUpdateQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'UPDATE Capi SET'
+      '  Descrizione = :Descrizione,'
+      '  VersionID = VersionID + 1'
+      'WHERE'
+      '  ID = :ID AND VersionID = :VersionID')
+    Left = 641
+    Top = 108
+    ParamData = <
+      item
+        Name = 'DESCRIZIONE'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 50
+      end
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'VERSIONID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object CapoDeleteQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'DELETE FROM Capi'
+      'WHERE'
+      '  ID = :ID AND VersionID = :VersionID')
+    Left = 707
+    Top = 130
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'VERSIONID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object LavorazioneInsertQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'DECLARE @ID int'
+      ''
+      'SELECT @ID = NEXT VALUE FOR LavorazioniID'
+      ''
+      'INSERT INTO Lavorazioni ('
+      '  ID,'
+      '  Descrizione,'
+      '  VersionID)'
+      'VALUES ('
+      '  @ID,'
+      '  :Descrizione,'
+      '  0)'
+      '')
+    Left = 548
+    Top = 222
+    ParamData = <
+      item
+        Name = 'DESCRIZIONE'
+        ParamType = ptInput
+      end>
+  end
+  object LavorazioneUpdateQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'UPDATE Lavorazioni SET'
+      '  Descrizione = :Descrizione,'
+      '  VersionID = VersionID + 1'
+      'WHERE'
+      '  ID = :ID AND VersionID = :VersionID')
+    Left = 626
+    Top = 244
+    ParamData = <
+      item
+        Name = 'DESCRIZIONE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VERSIONID'
+        ParamType = ptInput
+      end>
+  end
+  object LavorazioneDeleteQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'DELETE FROM Lavorazioni'
+      'WHERE'
+      '  ID = :ID AND VersionID = :VersionID')
+    Left = 708
+    Top = 266
+    ParamData = <
+      item
+        Name = 'ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VERSIONID'
+        ParamType = ptInput
+      end>
+  end
+  object ClienteInsertQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'DECLARE @ID int'
+      ''
+      'SELECT @ID = NEXT VALUE FOR ClientiID'
+      ''
+      'INSERT INTO Clienti ('
+      '  ID,'
+      '  Descrizione,'
+      '  VersionID)'
+      'VALUES ('
+      '  @ID,'
+      '  :Descrizione,'
+      '  0)'
+      '')
+    Left = 516
+    Top = 372
+    ParamData = <
+      item
+        Name = 'DESCRIZIONE'
+        ParamType = ptInput
+      end>
+  end
+  object ClienteUpdateQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'UPDATE Clienti SET'
+      '  Descrizione = :Descrizione,'
+      '  VersionID = VersionID + 1'
+      'WHERE'
+      '  ID = :ID AND VersionID = :VersionID')
+    Left = 582
+    Top = 394
+    ParamData = <
+      item
+        Name = 'DESCRIZIONE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VERSIONID'
+        ParamType = ptInput
+      end>
+  end
+  object ClienteDeleteQuery: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'DELETE FROM Clienti'
+      'WHERE'
+      '  ID = :ID AND VersionID = :VersionID')
+    Left = 652
+    Top = 416
+    ParamData = <
+      item
+        Name = 'ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VERSIONID'
+        ParamType = ptInput
+      end>
+  end
+end

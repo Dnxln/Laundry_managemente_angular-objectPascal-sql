@@ -1,0 +1,125 @@
+unit HTTP.Handler;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  System.Generics.Collections,
+  IdContext,
+  IdCustomHTTPServer,
+  IdHTTPServer,
+
+  HTTP.Controller;
+
+type
+
+{ THTTPHandler }
+
+  THTTPHandler = class
+  strict private
+    FHTTP: TIdHTTPServer;
+    FControllers: TObjectDictionary<
+      THTTPCommandType, TDictionary<String, THTTPControllerClass>>;
+
+    procedure OnHTTPCommands(
+      AContext: TIdContext;
+      ARequestInfo: TIdHTTPRequestInfo;
+      AResponseInfo: TIdHTTPResponseInfo);
+
+    function SearchControllerClass(
+      const ACommandType: THTTPCommandType; const AUri: String): THTTPControllerClass;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure AfterConstruction; override;
+
+    procedure RegisterController<T: THTTPAbstractController>(
+      const ACommandType: THTTPCommandType; const AUri: String);
+  end;
+
+implementation
+
+{ THTTPHandler }
+
+constructor THTTPHandler.Create;
+begin
+  inherited Create;
+  FHTTP := TIdHTTPServer.Create(nil);
+  FControllers := TObjectDictionary<
+      THTTPCommandType, TDictionary<
+        String, THTTPControllerClass>>.Create([doOwnsValues]);
+end;
+
+destructor THTTPHandler.Destroy;
+begin
+  FControllers.Free;
+  FHTTP.Free;
+  inherited Destroy;
+end;
+
+procedure THTTPHandler.AfterConstruction;
+begin
+  inherited AfterConstruction;
+  FHTTP.DefaultPort := 8888;
+  FHTTP.OnCommandGet := OnHTTPCommands;
+  FHTTP.OnCommandOther := OnHTTPCommands;
+  FHTTP.Active := True;
+end;
+
+function THTTPHandler.SearchControllerClass(
+  const ACommandType: THTTPCommandType; const AUri: String): THTTPControllerClass;
+var
+  LDictionary: TDictionary<String, THTTPControllerClass>;
+  LControllerClass: THTTPControllerClass;
+begin
+  if not FControllers.TryGetValue(ACommandType, LDictionary) then
+    result := nil
+  else if not LDictionary.TryGetValue(AUri.ToLower(), result) then
+    result := nil;
+end;
+
+procedure THTTPHandler.OnHTTPCommands(
+  AContext: TIdContext;
+  ARequestInfo: TIdHTTPRequestInfo;
+  AResponseInfo: TIdHTTPResponseInfo);
+var
+  LControllerClass: THTTPControllerClass;
+  LController: THTTPAbstractController;
+begin
+  LControllerClass := SearchControllerClass(
+    ARequestInfo.CommandType, ARequestInfo.URI);
+  if not Assigned(LControllerClass) then
+    AResponseInfo.ResponseNo := 404
+  else
+  begin
+    LController := LControllerClass.Create(ARequestInfo, AResponseInfo);
+    try
+      LController.Execute;
+    finally
+      LController.Free;
+    end;
+  end;
+end;
+
+procedure THTTPHandler.RegisterController<T>(
+  const ACommandType: THTTPCommandType; const AUri: String);
+var
+  LDictionary: TDictionary<String, THTTPControllerClass>;
+begin
+  if not FControllers.TryGetValue(ACommandType, LDictionary) then
+  begin
+    LDictionary := TDictionary<String, THTTPControllerClass>.Create;
+    try
+      FControllers.Add(ACommandType, LDictionary);
+    except
+      LDictionary.Free;
+      raise;
+    end;
+  end;
+
+  LDictionary.Add(AUri.ToLower(), T);
+end;
+
+end.

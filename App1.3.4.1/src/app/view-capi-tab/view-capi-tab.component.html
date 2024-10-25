@@ -1,0 +1,98 @@
+<h1>Capi</h1>
+
+<div class="center-screen">
+
+    <div class="option-container">
+        <mat-form-field>
+            <mat-label>Record da esaminare</mat-label>
+            <mat-select (selectionChange)="handleSelectionChange($event)" [(ngModel)]="selectedIDForm">
+                <mat-option *ngFor="let ID of IDs" [value]="ID.value">
+                    {{ID.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Inserisci il valore che cerchi:</mat-label>
+            <input matInput placeholder="f:<campo>#<valore>" (keydown)="handleKeyPress($event)"[(ngModel)]="descrizioneCapo">
+        </mat-form-field>
+    </div>
+
+    <div class="button-container">
+        <button (click)="filtraCapiTable()" mat-raised-button color="primary">Filtra tabella</button>
+    </div>
+
+    <div>
+        <button (click)="apriInserisci()" class="button-container" mat-raised-button color="primary">Inserisci capo</button> <!-- -->
+        <mat-form-field *ngIf="selectedInserisci != false">
+          <mat-label >Inserisci la descrizione</mat-label>
+          <input matInput (keydown)="handleKeyPress3($event)" [(ngModel)]="descrizione" >
+        </mat-form-field>
+    </div>
+
+    
+    <div *ngIf="selectedCapo != null" >
+
+        <button (click)="apriModifica()" class="button-container" mat-raised-button color="accent">Modifica record selezionato</button>
+        <mat-form-field *ngIf="selectedModifica != false">
+          <mat-label >Inserisci la descrizione</mat-label>
+          <input matInput (keydown)="handleKeyPress2($event)" [(ngModel)]="descrizione" >
+        </mat-form-field>
+        <button (click)="eliminaCapo(selectedCapo)" class="button-container" mat-raised-button color="warn">Elimina record selezionato</button>
+      </div>
+      
+    
+    
+</div>
+
+<div class="table-container">
+
+    <table mat-table [dataSource]="dataSourceCapi" class="mat-elevation-z8" matSort mat-table-selection>
+        <!-- Definizione delle colonne -->
+        <ng-container matColumnDef="descrizione">
+          <th mat-header-cell *matHeaderCellDef> Descrizione </th>
+          <td mat-cell *matCellDef="let item"> {{ item.descrizione }} </td>
+        </ng-container>
+      
+        <!-- Righe della tabella -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsCapi"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['descrizione']; let i = index;"
+            [ngClass]="{ 'selected': isRowSelectedByIndex(i) }"
+            (click)="handleRowClick(row, i)"
+            mat-row-selection
+            [rowSelection]="row">
+        </tr>
+      </table>
+
+</div>
+
+<mat-paginator #paginatorCapi [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+
+<div *ngIf="selectedCapo != null" class="table-container">
+    
+    <table mat-table [dataSource]="dataSourceCapiID" class="mat-elevation-z8">
+        <!-- Definizione delle colonne -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let item"> {{ item.id }} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="descrizione">
+          <th mat-header-cell *matHeaderCellDef> Descrizione </th>
+          <td mat-cell *matCellDef="let item"> {{ item.descrizione }} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="versionID">
+          <th mat-header-cell *matHeaderCellDef> versionID </th>
+          <td mat-cell *matCellDef="let item"> {{ item.versionID }} </td>
+        </ng-container>
+      
+        <!-- Righe della tabella -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsCapiID"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsCapiID; let i = index;" [ngClass]="'mat-row row-hover'"></tr>
+      </table>
+
+</div>
